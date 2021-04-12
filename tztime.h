@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-// TZLogGetTimeFunc get time function type
+// TZTimeGetFunc get time function type
 typedef uint64_t (*TZTimeGetFunc)(void);
 
 // TZTimeLoad load module
