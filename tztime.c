@@ -3,6 +3,7 @@
 // Authors: jdh99 <jdh821@163.com>
 
 #include "tztime.h"
+#include <string.h>
 
 static TZTimeGetFunc gGetTimeFunc = NULL;
 
