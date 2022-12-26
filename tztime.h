@@ -1,4 +1,4 @@
-// Copyright 2019-2019 The jdh99 Authors. All rights reserved.
+// Copyright 2019-2022 The jdh99 Authors. All rights reserved.
 // Clock moudule
 // Authors: jdh99 <jdh821@163.com>
 
@@ -17,13 +17,25 @@
 // 小时
 #define TZTIME_HOUR 3600000000ull
 
-// TZTimeGetFunc get time function type
+// TZTimeGetFunc 读取时间的函数指针.返回值是时间,单位:us
 typedef uint64_t (*TZTimeGetFunc)(void);
 
-// TZTimeLoad load module
+// TZTimeLoad 模块载入
 void TZTimeLoad(TZTimeGetFunc getTimeFunc);
 
-// TZTimeGet get time.accuracy:microsecond
+// TZTimeGet 读取时间.单位:us
 uint64_t TZTimeGet(void);
+
+// TZTimeGetMillsecond 读取时间.单位:ms
+uint64_t TZTimeGetMillsecond(void);
+
+// TZTimeGetSecond 读取时间.单位:s
+uint32_t TZTimeGetSecond(void);
+
+// TZTimeGetMinute 读取时间.单位:m
+uint32_t TZTimeGetMinute(void);
+
+// TZTimeGetHour 读取时间.单位:h
+uint32_t TZTimeGetHour(void);
 
 #endif
