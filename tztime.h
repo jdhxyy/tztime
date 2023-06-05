@@ -38,4 +38,16 @@ uint32_t TZTimeGetMinute(void);
 // TZTimeGetHour 读取时间.单位:h
 uint32_t TZTimeGetHour(void);
 
+// TZTimeGetMillsecondFast 快速运算读取时间.单位:ms
+uint64_t TZTimeGetMillsecondFast(void);
+
+// TZTimeGetSecondFast 快速运算读取时间.单位:s
+uint32_t TZTimeGetSecondFast(void);
+
+// TZTimeGetMinuteFast 快速运算读取时间.单位:m
+uint32_t TZTimeGetMinuteFast(void);
+
+// TZTimeGetHourFast 快速运算读取时间.单位:h
+uint32_t TZTimeGetHourFast(void);
+
 #endif
