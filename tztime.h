@@ -6,6 +6,7 @@
 #define TZTIME_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 // 时间单位
 // 毫秒
@@ -22,6 +23,9 @@ typedef uint64_t (*TZTimeGetFunc)(void);
 
 // TZTimeLoad 模块载入
 void TZTimeLoad(TZTimeGetFunc getTimeFunc);
+
+// TZTimeEnableFast 使能快速模式.如果芯片不支持硬件除法器,可开启快速模式
+void TZTimeEnableFast(bool enable);
 
 // TZTimeGet 读取时间.单位:us
 uint64_t TZTimeGet(void);

@@ -6,10 +6,16 @@
 #include <string.h>
 
 static TZTimeGetFunc gGetTimeFunc = NULL;
+static bool gIsFast = false;
 
 // TZTimeLoad 模块载入
 void TZTimeLoad(TZTimeGetFunc getTimeFunc) {
     gGetTimeFunc = getTimeFunc;
+}
+
+// TZTimeEnableFast 使能快速访问.如果芯片不支持硬件除法器,可开启快速访问
+void TZTimeEnableFast(bool enable) {
+    gIsFast = enable;
 }
 
 // TZTimeGet 读取时间.单位:us
@@ -22,22 +28,38 @@ uint64_t TZTimeGet(void) {
 
 // TZTimeGetMillsecond 读取时间.单位:ms
 uint64_t TZTimeGetMillsecond(void) {
-    return TZTimeGet() / TZTIME_MILLISECOND;
+    if (gIsFast == false) {
+        return TZTimeGet() / TZTIME_MILLISECOND;
+    } else {
+        return TZTimeGetMillsecondFast();
+    }
 }
 
 // TZTimeGetSecond 读取时间.单位:s
 uint32_t TZTimeGetSecond(void) {
-    return (uint32_t)(TZTimeGet() / TZTIME_SECOND);
+    if (gIsFast == false) {
+        return (uint32_t)(TZTimeGet() / TZTIME_SECOND);
+    } else {
+        return TZTimeGetSecondFast();
+    }
 }
 
 // TZTimeGetMinute 读取时间.单位:m
 uint32_t TZTimeGetMinute(void) {
-    return (uint32_t)(TZTimeGet() / TZTIME_MINUTE);
+    if (gIsFast == false) {
+        return (uint32_t)(TZTimeGet() / TZTIME_MINUTE);
+    } else {
+        return TZTimeGetMinuteFast();
+    }
 }
 
 // TZTimeGetHour 读取时间.单位:h
 uint32_t TZTimeGetHour(void) {
-    return (uint32_t)(TZTimeGet() / TZTIME_HOUR);
+    if (gIsFast == false) {
+        return (uint32_t)(TZTimeGet() / TZTIME_HOUR);
+    } else {
+        return TZTimeGetHourFast();
+    }
 }
 
 // TZTimeGetMillsecondFast 快速运算读取时间.单位:ms
