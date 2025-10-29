@@ -20,22 +20,30 @@ void TZTimeEnableFast(bool enable) {
 
 // TZTimeGet 读取时间.单位:us
 uint64_t TZTimeGet(void) {
-    static uint64_t last = 0;
-    static uint64_t now = 0;
-    static uint8_t i = 0;
+    static uint64_t save = 0;
 
     if (gGetTimeFunc == NULL) {
         return 0;
     }
 
     // 解决并发可能导致的时间滞后问题
+    uint64_t now = gGetTimeFunc();
+    uint64_t last = save;
+    uint8_t i = 0;
     for (i = 0; i < 10; i++) {
-        now = gGetTimeFunc();
         if (now >= last) {
             break;
         }
+        now = gGetTimeFunc();
     }
-    last = now;
+
+    // 解决save变量的并发可能
+    for (i = 0; i < 3; i++) {
+        if (save >= now) {
+            break;
+        }
+        save = now;
+    }
     return now;
 }
 
