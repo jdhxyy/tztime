@@ -20,10 +20,23 @@ void TZTimeEnableFast(bool enable) {
 
 // TZTimeGet 读取时间.单位:us
 uint64_t TZTimeGet(void) {
+    static uint64_t last = 0;
+    static uint64_t now = 0;
+    static uint8_t i = 0;
+
     if (gGetTimeFunc == NULL) {
         return 0;
     }
-    return gGetTimeFunc();
+
+    // 解决并发可能导致的时间滞后问题
+    for (i = 0; i < 10; i++) {
+        now = gGetTimeFunc();
+        if (now >= last) {
+            break;
+        }
+    }
+    last = now;
+    return now;
 }
 
 // TZTimeGetMillsecond 读取时间.单位:ms
@@ -92,4 +105,30 @@ uint32_t TZTimeGetHourFast(void) {
     val = (val >> 32) + (val >> 34) - (val >> 36) + (val >> 39) - (val >> 41) - (val >> 44) - (val >> 46) - 
         (val >> 49) - (val >> 55) + (val >> 58) + (val >> 59) - (val >> 61);
     return (uint32_t)val;
+}
+
+// TZTimeGetTimeout 获取超时时间.单位:us
+uint64_t TZTimeGetTimeout(uint64_t t) {
+    // 解决并发导致的减法操作导致的负数问题
+    return TZTimeGet() - t;
+}
+
+// TZTimeGetTimeoutMillisecond 获取超时时间.单位:ms
+uint64_t TZTimeGetTimeoutMillisecond(uint64_t t) {
+    return TZTimeGetMillsecond() - t;
+}
+
+// TZTimeGetTimeoutSecond 获取超时时间.单位:s
+uint32_t TZTimeGetTimeoutSecond(uint32_t t) {
+    return (uint32_t)(TZTimeGetSecond() - t);
+}
+
+// TZTimeGetTimeoutMinute 获取超时时间.单位:m
+uint32_t TZTimeGetTimeoutMinute(uint32_t t) {
+    return (uint32_t)(TZTimeGetMinute() - t);
+}
+
+// TZTimeGetTimeoutHour 获取超时时间.单位:h
+uint32_t TZTimeGetTimeoutHour(uint32_t t) {
+    return (uint32_t)(TZTimeGetHour() - t);
 }
