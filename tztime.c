@@ -120,15 +120,15 @@ uint64_t TZTimeGetTimeoutMillisecond(uint64_t t) {
 
 // TZTimeGetTimeoutSecond 获取超时时间.单位:s
 uint32_t TZTimeGetTimeoutSecond(uint32_t t) {
-    return (uint32_t)(TZTimeGetSecond() - t);
+    return TZTimeGetSecond() - t;
 }
 
 // TZTimeGetTimeoutMinute 获取超时时间.单位:m
 uint32_t TZTimeGetTimeoutMinute(uint32_t t) {
-    return (uint32_t)(TZTimeGetMinute() - t);
+    return TZTimeGetMinute() - t;
 }
 
 // TZTimeGetTimeoutHour 获取超时时间.单位:h
 uint32_t TZTimeGetTimeoutHour(uint32_t t) {
-    return (uint32_t)(TZTimeGetHour() - t);
+    return TZTimeGetHour() - t;
 }
