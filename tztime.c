@@ -5,8 +5,13 @@
 #include "tztime.h"
 #include <string.h>
 
+// 允许的时间差.单位:us
+#define DELTA_TIME 100
+
 static TZTimeGetFunc gGetTimeFunc = NULL;
 static bool gIsFast = false;
+
+static uint64_t getTime(void);
 
 // TZTimeLoad 模块载入
 void TZTimeLoad(TZTimeGetFunc getTimeFunc) {
@@ -20,10 +25,27 @@ void TZTimeEnableFast(bool enable) {
 
 // TZTimeGet 读取时间.单位:us
 uint64_t TZTimeGet(void) {
+    return getTime();
+}
+
+static uint64_t getTime(void) {
+    uint64_t t1, t2;
+
     if (gGetTimeFunc == NULL) {
         return 0;
     }
-    return gGetTimeFunc();
+
+    for (;;) {
+        t1 = gGetTimeFunc();
+        t2 = gGetTimeFunc();
+        if (t1 == t2) {
+            break;
+        }
+        if (t1 < t2 && t2 - t1 <= DELTA_TIME) {
+            break;
+        }
+    }
+    return t2;
 }
 
 // TZTimeGetMillsecond 读取时间.单位:ms
