@@ -54,4 +54,19 @@ uint32_t TZTimeGetMinuteFast(void);
 // TZTimeGetHourFast 快速运算读取时间.单位:h
 uint32_t TZTimeGetHourFast(void);
 
+// TZTimeGetTimeout 获取超时时间.单位:us
+uint64_t TZTimeGetTimeout(uint64_t t);
+
+// TZTimeGetTimeoutMillisecond 获取超时时间.单位:ms
+uint64_t TZTimeGetTimeoutMillisecond(uint64_t t);
+
+// TZTimeGetTimeoutSecond 获取超时时间.单位:s
+uint32_t TZTimeGetTimeoutSecond(uint32_t t);
+
+// TZTimeGetTimeoutMinute 获取超时时间.单位:m
+uint32_t TZTimeGetTimeoutMinute(uint32_t t);
+
+// TZTimeGetTimeoutHour 获取超时时间.单位:h
+uint32_t TZTimeGetTimeoutHour(uint32_t t);
+
 #endif
